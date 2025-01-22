@@ -7,8 +7,13 @@ const createUserIntoDB = async (payload: TUser) => {
   const existUser = await User.isUserExistsByEmail(payload.email);
 
   if(existUser){
-    throw new AppError(StatusCodes.BAD_GATEWAY, "User already exists!");
+    throw new AppError(StatusCodes.BAD_REQUEST, "User already exists!");
   }
+
+  if(payload.password !== payload.confirmPassword){
+    throw new AppError(StatusCodes.NOT_ACCEPTABLE, "Password does not match");
+  }
+
 
   const user = await User.create(payload);
   return user;

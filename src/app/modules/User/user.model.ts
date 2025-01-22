@@ -55,7 +55,7 @@ userSchema.post("save", function (
   if (error.name === "MongoServerError" && error.code === 11000) {
     const field = Object.keys(error.keyValue)[0];
     const value = error.keyValue[field];
-    const errorMessage = `The ${field} "${value}" is already taken. Please use a different ${field}.`;
+    const errorMessage = `The ${field} "${value}" is already taken. Please use a unique ${field}.`;
 
     next(new AppError(StatusCodes.BAD_REQUEST, errorMessage));
   } else {

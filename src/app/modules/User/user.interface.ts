@@ -2,9 +2,10 @@ import { Model } from 'mongoose';
 import { USER_ROLE } from './user.constant';
 
 export interface TUser {
-  email: string;
   userName:string;
+  email: string;
   password: string;
+  confirmPassword?: string;
   role?: keyof typeof USER_ROLE;
   status?: 'in-progress' | 'blocked';
   isDeleted?: boolean;
