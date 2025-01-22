@@ -10,7 +10,7 @@ import { User } from '../modules/User/user.model';
 
 const auth = (...requiredRoles: (keyof typeof USER_ROLE)[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization;
+    const token = req.headers.authorization?.split(" ")[1];
 
     // checking if the token is missing
     if (!token) {
@@ -39,7 +39,7 @@ const auth = (...requiredRoles: (keyof typeof USER_ROLE)[]) => {
     }
 
     if (requiredRoles && !requiredRoles.includes(role)) {
-      throw new AppError(StatusCodes.UNAUTHORIZED, 'You are not authorized');
+      throw new AppError(StatusCodes.UNAUTHORIZED, 'You have no permission to access this functionality.');
     }
 
     req.user = decoded as JwtPayload;

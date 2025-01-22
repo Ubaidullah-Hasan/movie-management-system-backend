@@ -5,7 +5,7 @@ export interface IMovie extends Document {
     title: string; 
     description: string;
     released_at: Date; 
-    duration: number; 
+    duration: number|string; 
     genre: string; 
     avg_rating?: number; 
     total_rating?: number; 
