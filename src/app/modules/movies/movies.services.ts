@@ -18,8 +18,52 @@ const createMovie = async (payload: IMovie, _id: string) => {
 }
 
 const getAllMovies = async () => {
-    const movies = await Movies.find().populate("created_by", "userName -_id");
+    // const movies = await Movies
+    //     .find()
+    //     .populate("created_by", "userName -_id");
 
+    // if (!movies) {
+    //     return [];
+    // }
+    // console.log(movies);
+
+    // const rating = await Rating.find({ movie: movies._id })
+
+    const movies = await Movies.aggregate([
+        {
+            $lookup: {
+                from: 'ratings', // Rating collection
+                localField: '_id',
+                foreignField: 'movie',
+                as: 'ratings',
+            },
+        },
+        {
+            $lookup: {
+                from: 'users', // User collection
+                localField: 'created_by',
+                foreignField: '_id',
+                as: 'creator_info', // New field to hold user information
+            },
+        },
+        {
+            $addFields: {
+                avg_rating: { $avg: '$ratings.rating' },
+                total_rating: { $size: '$ratings' },
+            },
+        },
+        {
+            $project: {
+                ratings: 0, // remove ratings field
+                'creator_info.password': 0, // remove password field
+                'creator_info.role': 0, 
+                'creator_info.isDeleted': 0, 
+                'creator_info.createdAt': 0,
+                'creator_info.updatedAt': 0,
+                'creator_info.status': 0,
+            },
+        },
+    ]);
     return movies;
 }
 
@@ -30,26 +74,26 @@ const getSingleMovies = async (movieId: string) => {
 }
 
 
-const updateAMovies = async (myId: string,movieId: string, payload: Partial<IMovie>) => {
-    const isPermission = await Movies.findOne({_id: movieId, created_by: myId});
+const updateAMovies = async (myId: string, movieId: string, payload: Partial<IMovie>) => {
+    const isPermission = await Movies.findOne({ _id: movieId, created_by: myId });
 
-    if(!isPermission){
+    if (!isPermission) {
         throw new AppError(StatusCodes.BAD_REQUEST, "You can't modify another user movie.")
     }
 
     const duration = payload.duration;
     let strToNumSeconds;
 
-    if(duration){
+    if (duration) {
         strToNumSeconds = convertToSeconds(duration as string);
     }
 
     const movies = await Movies.findByIdAndUpdate(movieId,
-        { 
-            ...payload, 
-            duration: strToNumSeconds, 
+        {
+            ...payload,
+            duration: strToNumSeconds,
         },
-        {new: true}
+        { new: true }
     );
 
     return movies;

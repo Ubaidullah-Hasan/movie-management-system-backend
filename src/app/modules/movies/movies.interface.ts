@@ -1,7 +1,8 @@
-import { Document } from "mongoose";
+import { Document, ObjectId } from "mongoose";
 
 export interface IMovie extends Document {
-    created_by: string; 
+    _id: string;
+    created_by: ObjectId; 
     title: string; 
     description: string;
     released_at: Date; 

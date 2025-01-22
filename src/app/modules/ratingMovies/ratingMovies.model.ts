@@ -9,7 +9,7 @@ const ratingSchema = new Schema<IRating>(
             ref: "Movie", // Reference to the Movie model
             required: true,
         },
-        rating_by: {
+        rating_by: { 
             type: mongoose.Schema.Types.ObjectId,
             ref: "User", // Reference to the User who rated
             required: true,
