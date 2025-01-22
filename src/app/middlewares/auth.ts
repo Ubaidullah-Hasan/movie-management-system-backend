@@ -3,7 +3,7 @@ import { JwtPayload } from 'jsonwebtoken';
 import config from '../config';
 import AppError from '../errors/AppError';
 import catchAsync from '../utils/catchAsync';
-import { USER_ROLE, UserStatus } from '../modules/User/user.constant';
+import { USER_ROLE, USER_STATUS,  } from '../modules/User/user.constant';
 import { StatusCodes } from 'http-status-codes';
 import { verifyToken } from '../modules/auth/auth.utils';
 import { User } from '../modules/User/user.model';
@@ -34,7 +34,7 @@ const auth = (...requiredRoles: (keyof typeof USER_ROLE)[]) => {
 
     const status = user?.status;
 
-    if (status === UserStatus[1]) {
+    if (status === USER_STATUS[1]) {
       throw new AppError(StatusCodes.FORBIDDEN, 'This user is blocked !');
     }
 

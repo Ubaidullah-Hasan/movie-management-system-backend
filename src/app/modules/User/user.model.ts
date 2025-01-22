@@ -3,7 +3,7 @@
 import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import config from '../../config';
-import { USER_ROLE, UserStatus } from './user.constant';
+import { USER_ROLE, USER_STATUS } from './user.constant';
 import { TUser, UserModel } from './user.interface';
 import AppError from '../../errors/AppError';
 import { StatusCodes } from 'http-status-codes';
@@ -14,11 +14,13 @@ const userSchema = new Schema<TUser, UserModel>(
       type: String,
       required: true,
       unique: true,
+      trim: true,
     },
     userName: {
       type: String,
       required: true,
       unique: true,
+      trim: true,
     },
     password: {
       type: String,
@@ -32,7 +34,7 @@ const userSchema = new Schema<TUser, UserModel>(
     },
     status: {
       type: String,
-      enum: UserStatus,
+      enum: USER_STATUS,
       default: 'in-progress',
     },
     isDeleted: {
@@ -80,15 +82,15 @@ userSchema.post('save', function (doc, next) {
   next();
 });
 
-// isExisting user by email
-userSchema.statics.isUserExistsByEmail = async function (email: string) {
-  return await User.findOne({ email }).select('+password');
+// isExisting user by email or username
+userSchema.statics.isUserExistsByEmailOrUserName = async function (identifier: string) {
+
+  return await User.findOne({
+    $or: [{ email: identifier }, { userName: identifier }]
+  }).select('+password');
+
 };
 
-// isExisting user by username
-userSchema.statics.isUserExistsByUsername = async function (userName) {
-  return await User.findOne({ userName }).select('+password');
-}
 
 userSchema.statics.isPasswordMatched = async function (
   plainTextPassword,

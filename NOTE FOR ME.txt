@@ -1,0 +1,10 @@
+some new learning:
+1) handle login by username or email 
+
+    const user = await User.findOne({
+      $or: [{ email: identifier }, { userName: identifier }],
+    });
+
+2) time(duration) collect by number for calculation in future
+
+3) 

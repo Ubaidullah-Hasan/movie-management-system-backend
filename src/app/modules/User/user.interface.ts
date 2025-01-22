@@ -2,6 +2,7 @@ import { Model } from 'mongoose';
 import { USER_ROLE } from './user.constant';
 
 export interface TUser {
+  _id: string;
   userName:string;
   email: string;
   password: string;
@@ -24,7 +25,7 @@ export interface UserModel extends Model<TUser> {
   ): Promise<boolean>;
 
   //instance methods for checking if the user exist
-  isUserExistsByUsername(userName: string): Promise<TUser>;
+  isUserExistsByEmailOrUserName(identifier: string): Promise<TUser>;
 
 }
 
