@@ -26,5 +26,7 @@ const ratingSchema = new Schema<IRating>(
     }
 );
 
+ratingSchema.index({movie: 1, rating_by: 1}, {unique: true})
+
 // Create and export the Rating model
 export const Rating = model<IRating>("Rating", ratingSchema);
