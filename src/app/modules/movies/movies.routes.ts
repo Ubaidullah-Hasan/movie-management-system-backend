@@ -13,4 +13,20 @@ route.post("/create-movies",
     MoviesControllers.createMovie
 )
 
+route.get("/", 
+    auth(USER_ROLE.user, USER_ROLE.super_admin),
+    MoviesControllers.getAllMovies
+)
+
+route.get("/:movieId", 
+    auth(USER_ROLE.user, USER_ROLE.super_admin),
+    MoviesControllers.getSingleMovies
+)
+
+route.patch("/:movieId",
+    auth(USER_ROLE.user),
+    validateRequest(MoviesValidation.updateMovieValidationSchema),
+    MoviesControllers.updateSingleMovie
+)
+
 export const MoviesRoutes = route;

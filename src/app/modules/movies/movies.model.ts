@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import mongoose, { model, Schema } from "mongoose";
 import { IMovie } from "./movies.interface";
 import { Rating } from "../ratingMovies/ratingMovies.model";
@@ -32,14 +33,6 @@ const movieSchema = new Schema(
             required: true,
             trim: true,
         },
-        // avg_rating: {
-        //     type: Number,
-        //     default: 0,
-        // },
-        // total_rating: {
-        //     type: Number,
-        //     default: 0,
-        // },
         language: {
             type: String,
             required: true,
@@ -48,8 +41,8 @@ const movieSchema = new Schema(
     },
     {
         timestamps: true,
-        toJSON: { virtuals: true }, // Enable virtuals for JSON responses
-        toObject: { virtuals: true }, // Enable virtuals for Object responses
+        toJSON: { virtuals: true, transform: transformDuration }, // Enable virtuals for JSON responses // Custom Transform
+        toObject: { virtuals: true, transform: transformDuration }, // Enable virtuals for Object responses
     }
 );
 
@@ -67,6 +60,7 @@ movieSchema.virtual('avg_rating').get(async function () {
             },
         },
     ]);
+    console.log({result});
 
     return result.length > 0 ? result[0].avgRating : 0; // Return average or default 0
 });
@@ -77,9 +71,28 @@ movieSchema.virtual('total_rating').get(async function () {
 
     // Fetch count of all ratings for this movie
     const count = await Rating.countDocuments({ movie: this._id });
-
+    console.log({count});
     return count; // Return the total count
 });
+
+// Virtual Field: Duration কে hh:mm:ss ফরম্যাটে রূপান্তর
+// movieSchema.virtual("formattedDuration").get(function () {
+//     const totalSeconds = this.duration;
+//     const hours = Math.floor(totalSeconds / 3600).toString().padStart(2, "0");
+//     const minutes = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, "0");
+//     const seconds = (totalSeconds % 60).toString().padStart(2, "0");
+//     return `${hours}:${minutes}:${seconds}`;
+// });
+
+// Transform Function: duration ফিল্ডে সেকেন্ডকে hh:mm:ss ফরম্যাটে রূপান্তর
+function transformDuration(doc: IMovie, ret: any) {
+    const totalSeconds = ret.duration;
+    const hours = Math.floor(totalSeconds / 3600).toString().padStart(2, "0");
+    const minutes = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, "0");
+    const seconds = (totalSeconds % 60).toString().padStart(2, "0");
+    ret.duration = `${hours}:${minutes}:${seconds}`; // Replace duration with formatted value
+    return ret;
+}
 
 
 export const Movies = model<IMovie>('Movie', movieSchema);
