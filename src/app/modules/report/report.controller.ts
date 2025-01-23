@@ -16,6 +16,33 @@ const createReprtByUser = catchAsync(async (req, res) => {
 });
 
 
+const getAllReprts = catchAsync(async (req, res) => {
+    const result = await ReportServices.getAllReports();
+
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: 'Report is retrived succesfully',
+        data: result,
+    });
+});
+
+
+const changeReportStatusBySuperAdmin = catchAsync(async (req, res) => {
+    const {reportId} = req.params;
+    const result = await ReportServices.changeReportStatusBySuperAdmin(reportId, req.body);
+
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: 'Report is retrived succesfully',
+        data: result,
+    });
+});
+
+
 export const ReportControllers = {
     createReprtByUser,
+    getAllReprts,
+    changeReportStatusBySuperAdmin
 };
