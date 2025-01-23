@@ -25,7 +25,7 @@ const moduleRoutes = [
         route: RatingRoutes,
     },
     {
-        path: '/routes',
+        path: '/reports',
         route: ReportRoutes,
     },
 

@@ -35,4 +35,6 @@ const reportSchema = new Schema<IReport>(
     { timestamps: true }
 );
 
+// reportSchema.index({ reportedBy : 1, movie: 1}, {unique: true});
+
 export const ReportModel = model<IReport>("Report", reportSchema);
