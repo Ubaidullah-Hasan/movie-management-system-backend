@@ -74,7 +74,7 @@
 | **Method** | **Endpoint**        | **Description**           |
 | ---------- | ------------------- | ------------------------- |
 | GET        | `/reports`            | Get All Reports |
-| GET        | `/reports/:reportID(6791b84e570c96c1e546e465)`  | Change Report Status |
+| PATCH        | `/reports/:reportID(6791b84e570c96c1e546e465)`  | Change Report Status |
 
 
 ### 3. User APIs
