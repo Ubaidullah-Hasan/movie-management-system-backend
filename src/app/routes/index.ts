@@ -3,6 +3,7 @@ import { UserRoutes } from '../modules/User/user.routes';
 import { AuthRoutes } from '../modules/auth/auth.route';
 import { MoviesRoutes } from '../modules/movies/movies.routes';
 import { RatingRoutes } from '../modules/ratingMovies/ratingMovies.routes';
+import { ReportRoutes } from '../modules/report/report.routes';
 
 const router = Router();
 
@@ -22,6 +23,10 @@ const moduleRoutes = [
     {
         path: '/ratings',
         route: RatingRoutes,
+    },
+    {
+        path: '/routes',
+        route: ReportRoutes,
     },
 
 ];
