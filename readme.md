@@ -71,7 +71,7 @@
 
 ### 2. Super Admin APIs
 
-| **Method** | **Endpoint**        | **Description**           |
+| **Method** | **Endpoint**        | **Description**           | 
 | ---------- | ------------------- | ------------------------- |
 | GET        | `/reports`            | Get All Reports |
 | PATCH        | `/reports/:reportID(6791b84e570c96c1e546e465)`  | Change Report Status |

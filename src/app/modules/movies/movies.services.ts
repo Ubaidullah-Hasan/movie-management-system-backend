@@ -19,16 +19,6 @@ const createMovie = async (payload: IMovie, _id: string) => {
 }
 
 const getAllMovies = async () => {
-    // const movies = await Movies
-    //     .find()
-    //     .populate("created_by", "userName -_id");
-
-    // if (!movies) {
-    //     return [];
-    // }
-    // console.log(movies);
-
-    // const rating = await Rating.find({ movie: movies._id })
 
     const movies = await Movies.aggregate([
         {
