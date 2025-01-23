@@ -35,7 +35,7 @@ const changeReportStatusBySuperAdmin = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: StatusCodes.OK,
         success: true,
-        message: 'Report is retrived succesfully',
+        message: 'Report status updated succesfully',
         data: result,
     });
 });

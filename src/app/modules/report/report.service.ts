@@ -39,17 +39,14 @@ const changeReportStatusBySuperAdmin = async (reportId: string, payload: Partial
     if (!existReport) {
         throw new AppError(StatusCodes.NOT_FOUND, "Report not found!");
     }
-
+    console.log(payload)
     const result = await ReportModel.findByIdAndUpdate(reportId,
-        { payload },
+        { $set: payload },
         { new: true }
     )
 
     return result;
 }
-
-
-
 
 
 export const ReportServices = {
